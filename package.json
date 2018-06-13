@@ -1,0 +1,22 @@
+{
+  "name": "fs-micro-service",
+  "version": "1.0.0",
+  "description": "An fs-based micro service utility.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "microservice",
+    "micro-service",
+    "micro",
+    "fs-router"
+  ],
+  "author": "Andy Burke <andy.burke@mailbox.earth>",
+  "license": "MIT",
+  "dependencies": {
+    "fs-router": "^0.4.1",
+    "httpstatuses": "^3.0.0",
+    "micro": "^9.3.2"
+  }
+}
