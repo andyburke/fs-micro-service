@@ -1,6 +1,8 @@
 'use strict';
 
+const extend = require( 'extend' );
 const fs = require( 'fs' );
+const get_request_ip = require( 'get-request-ip' );
 const httpstatuses = require( 'httpstatuses' );
 const micro = require( 'micro' );
 const path = require( 'path' );
@@ -65,15 +67,26 @@ console.log( `NODE_ENV: ${ process.env.NODE_ENV }` );
     } );
 } )();
 
-module.exports = async function( request, response ) {
-    const handler = api( request );
+module.exports = function( _options ) {
+    const options = extend( true, {
+        log: true
+    }, _options );
 
-    if ( !handler ) {
-        micro.send( response, httpstatuses.not_found, {
-            error: 'not found'
-        } );
-        return;
-    }
+    return async function( request, response ) {
 
-    return await handler( request, response );
+        if ( options.log ) {
+            console.log( `${ new Date().toISOString() } ${ get_request_ip( request ) } HTTP/${ request.httpVersion } HTTP${ request.connection && request.connection.encrypted ? 'S' : '' } ${ request.method } ${ request.url }` );
+        }
+
+        const handler = api( request );
+
+        if ( !handler ) {
+            micro.send( response, httpstatuses.not_found, {
+                error: 'not found'
+            } );
+            return;
+        }
+
+        return await handler( request, response );
+    };
 };
